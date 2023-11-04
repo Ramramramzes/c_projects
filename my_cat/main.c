@@ -4,6 +4,8 @@
 #include <string.h>
 
 #include "baseCat.h"
+#include "flagChecker.h"
+
 
 
 int main(int argc, char *argv[]){
@@ -12,12 +14,14 @@ int main(int argc, char *argv[]){
   //! argv - кол-во значений ./test text.txt (2) с флагами (3)
   // printf("%d - вывод заглушка чтобы код не крашился\n",argc);
 
-//todo Добавить в отдельную функцию чекфлагс для обработки    (' - ' это символ " - " это строка)
-  for(int i = 1; i < argc; i++){
-    if(argv[i][0] == '-'){
-      printf("%s", argv[i]);
-    }
+  Flags flags = flagChecker(argc,argv);
+  int flagsArr[] = {flags.b,flags.e,flags.n,flags.s,flags.t,flags.err};
+
+  for(int i = 0; i <= 5; i++){
+    printf("%d",flagsArr[i]);
   }
+  
+
 
 
 

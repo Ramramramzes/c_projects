@@ -11,12 +11,7 @@ void baseCat(char *fileName){
     for (; fileRows > 0; fileRows--){
         //* мы сохраняем строку в forMemory чтобы далее вывести ее 
         fgets(forMemory,size,file);
-        if(fileRows != 1){
-          printf("%s",forMemory);
-        }else{
-          printf("%s\n",forMemory);
-        }
-        
+        printf("%s",forMemory);
       }
     free(forMemory);
     fclose(file);
