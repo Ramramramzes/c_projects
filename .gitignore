@@ -1,6 +1,4 @@
 
 my_cat/README_RUS.md
 my_cat/test
-my_cat/text.txt
-my_cat/text2.txt
-my_cat/text3.txt
+my_cat/*.txt
