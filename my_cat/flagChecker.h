@@ -1,3 +1,6 @@
+#ifndef FLAG_CHECKER_H
+#define FLAG_CHECKER_H
+
 typedef struct{
   int b;
   int e;
@@ -88,3 +91,5 @@ Flags flagChecker(int argc,char *argv[]){
   }
   return flags;
 }
+
+#endif
