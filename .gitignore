@@ -4,3 +4,4 @@ my_cat/test
 my_cat/s21_cat
 my_cat/*.txt
 .vscode
+.DS_Store
