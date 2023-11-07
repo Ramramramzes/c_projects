@@ -9,27 +9,32 @@
 
 
 
-int printFile(Flags flagsObj, int argc, char *argv[]){ 
+//todo ДОПИСАТЬ КОММЕНТАРИИ К КАЖДОМУ ВЕЗДЕ 💬
+int printFile(Flags flagsObj, int argc, char *argv[]){
+  if(flagsObj.b == 1 && flagsObj.n == 1){
+    flagsObj.n = 0;
+  } 
   //* Пропускаем ./a.out и -флаги начинаем с 2
   for(int i = 2; i < argc; i++){
     FILE *file = fopen(argv[i], "r");
     char ch;
     bool newRow = true;
-    bool emptyLine = false;
+    // bool emptyLine = false;
     int lineCount = 1;
     int temp = 2; //* Не смог иначе обойти 🙈
-//! ДОБАВИТЬ САМОУНИЧТОЖАЮЩИЕСЯ ФЛАГИ ТИПА -b -n (срабатывает -b только) проверить 🚨🚨🚨🚨🚨
     //* Поштучно сравниваем каждый символ, добавим проверку каждого флага в while
     while((ch = fgetc(file)) != EOF){
       //* Обработка флагов 🇷🇺
 /*🚩*/if(flagsObj.s == 1){
-        if(ch == '\n'){
-          if(temp == 0 && emptyLine && newRow){
-            continue;
-          }
+        if(ch == '\n' && temp != 0){
           temp--;
-          emptyLine = true;
+        }else if (ch=='\n' && temp == 0 && newRow){
+          continue;
         }
+          // if(temp  0 && emptyLine && newRow){
+          //   ch = '\0';
+          // }
+          // emptyLine = true;
       }
 /*🚩*/if(flagsObj.b == 1){
         //* Циклами добавляю пробелы при использовании -b в cat выводится с пробелами 
@@ -55,6 +60,14 @@ int printFile(Flags flagsObj, int argc, char *argv[]){
           fputc('$', stdout);
         }
       }
+/*🚩*/if(flagsObj.t == 1){
+  if(ch == '	'){
+    fputc('^',stdout);
+    fputc('I',stdout);
+    ch = '\0';
+  }
+  
+}
       newRow = (ch == '\n');
       fputc(ch, stdout);
     }

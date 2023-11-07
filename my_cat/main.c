@@ -17,7 +17,7 @@ int main(int argc, char *argv[]){
   //! argv - кол-во значений ./test text.txt (2) с флагами (3)   🚨
   // printf("%d - вывод заглушка чтобы код не крашился\n",argc);
   Flags flags = flagChecker(argc,argv);
-
+  //! ДОБАВИТЬ ОБРАБОТКУ ОШИБОК БАХНУТЬ BREAK 🚨🚨🚨🚨🚨
 
     //* flagChecker(argc,argv) используем без flags 
     printFile(flags,argc,argv);
