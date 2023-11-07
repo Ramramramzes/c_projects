@@ -19,7 +19,6 @@ int printFile(Flags flagsObj, int argc, char *argv[]){
     FILE *file = fopen(argv[i], "r");
     char ch;
     bool newRow = true;
-    // bool emptyLine = false;
     int lineCount = 1;
     int temp = 2; //* Не смог иначе обойти 🙈
     //* Поштучно сравниваем каждый символ, добавим проверку каждого флага в while
@@ -31,10 +30,6 @@ int printFile(Flags flagsObj, int argc, char *argv[]){
         }else if (ch=='\n' && temp == 0 && newRow){
           continue;
         }
-          // if(temp  0 && emptyLine && newRow){
-          //   ch = '\0';
-          // }
-          // emptyLine = true;
       }
 /*🚩*/if(flagsObj.b == 1){
         //* Циклами добавляю пробелы при использовании -b в cat выводится с пробелами 
