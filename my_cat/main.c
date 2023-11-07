@@ -27,7 +27,7 @@ int main(int argc, char *argv[]){
   flags.t == 0 &&
   flags.err == 0 
 ){
-  simplePrint(argc,argv);
+  simplePrint(argv);
 }
 
 

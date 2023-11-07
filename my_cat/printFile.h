@@ -11,30 +11,29 @@
 
 //todo ДОПИСАТЬ КОММЕНТАРИИ К КАЖДОМУ ВЕЗДЕ 💬
 void printFile(Flags flagsObj, int argc, char *argv[]){
-  if(flagsObj.b == 1 && flagsObj.n == 1){
-    flagsObj.n = 0;
-  } 
   //* Пропускаем ./a.out и -флаги начинаем с 2
   for(int i = 2; i < argc; i++){
     FILE *file = fopen(argv[i], "r");
     char ch;
+    int circles = 0;
     bool newRow = true;
     int lineCount = 1;
-    int temp = 2; //* Не смог иначе обойти 🙈
+    // int temp = 1; //* Не смог иначе обойти 🙈
     //* Поштучно сравниваем каждый символ, добавим проверку каждого флага в while
     while((ch = fgetc(file)) != EOF){
       //* Обработка флагов 🇷🇺
 /*🚩*/if(flagsObj.s == 1){
-        if(ch == '\n' && temp != 0){
-          temp--;
-        }else if (ch=='\n' && temp == 0 && newRow){
-          continue;
+        if(ch == '\n' && newRow){
+          circles++;
+          if(circles >= 2){
+            continue;
+          }
         }
       }
 /*🚩*/if(flagsObj.b == 1){
         //* Циклами добавляю пробелы при использовании -b в cat выводится с пробелами 
         if(newRow && ch != '\n'){
-          fprintf(stdout,"     %d  ",lineCount);
+          fprintf(stdout,"     %d	",lineCount);
           lineCount++;
         }else if(newRow){
           for (int k = 0; k < 8; k++){
@@ -43,10 +42,10 @@ void printFile(Flags flagsObj, int argc, char *argv[]){
           
         }
       }
-/*🚩*/if(flagsObj.n == 1){
+/*🚩*/if(flagsObj.n == 1 && flagsObj.b != 1){
         //* Циклами добавляю пробелы при использовании -b в cat выводится с пробелами 
         if(newRow){
-          fprintf(stdout,"     %d  ",lineCount);
+          fprintf(stdout,"     %d	",lineCount);
           lineCount++;
         }
       }
@@ -67,5 +66,6 @@ void printFile(Flags flagsObj, int argc, char *argv[]){
       fputc(ch, stdout);
     }
   }
+
 }
 #endif
