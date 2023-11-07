@@ -29,6 +29,12 @@ Flags flagChecker(int argc,char *argv[]){
     }   
     if(argv[i][0] == '-' && strlen(argv[i]) == 2){
       switch (argv[i][1]){
+      case 'E':
+        flags.e = 1;
+        break;
+      case 'T':
+        flags.t = 1;
+        break;
       case 'b':
         flags.b = 1;
         break;
@@ -56,6 +62,18 @@ Flags flagChecker(int argc,char *argv[]){
       }
     }
     if(argv[i][0] == '-' && strlen(argv[i]) > 2){
+      if(strcmp(argv[i],"--number-nonblank") == 0){
+        flags.b = 1;
+        continue;
+      }
+      if(strcmp(argv[i],"--number") == 0){
+        flags.n = 1;
+        continue;
+      }
+      if(strcmp(argv[i],"--squeeze-blank") == 0){
+        flags.s = 1;
+        continue;
+      }
       for (int j = 1; j < (int)strlen(argv[i]); j++){
         if(flags.err == 0){
           switch (argv[i][j]){
@@ -65,6 +83,9 @@ Flags flagChecker(int argc,char *argv[]){
           case 'e':
             flags.e = 1;
             continue;
+          case 'E':
+            flags.e = 1;
+            continue;
           case 'n':
             flags.n = 1;
             continue;
@@ -72,6 +93,9 @@ Flags flagChecker(int argc,char *argv[]){
             flags.s = 1;
             continue;
           case 't':
+            flags.t = 1;
+            continue;
+          case 'T':
             flags.t = 1;
             continue;
           default:
