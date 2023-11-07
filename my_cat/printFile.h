@@ -10,7 +10,7 @@
 
 
 //todo ДОПИСАТЬ КОММЕНТАРИИ К КАЖДОМУ ВЕЗДЕ 💬
-int printFile(Flags flagsObj, int argc, char *argv[]){
+void printFile(Flags flagsObj, int argc, char *argv[]){
   if(flagsObj.b == 1 && flagsObj.n == 1){
     flagsObj.n = 0;
   } 
@@ -67,6 +67,5 @@ int printFile(Flags flagsObj, int argc, char *argv[]){
       fputc(ch, stdout);
     }
   }
-  return 0;
 }
 #endif

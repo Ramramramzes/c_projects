@@ -4,7 +4,7 @@
 #include <string.h>
 
 //todo Удалить и не выебываться 😂
-// #include "fileSize.h"
+#include "simplePrint.h"
 #include "flagChecker.h"
 #include "printFile.h"
 
@@ -19,7 +19,18 @@ int main(int argc, char *argv[]){
   Flags flags = flagChecker(argc,argv);
   //! ДОБАВИТЬ ОБРАБОТКУ ОШИБОК БАХНУТЬ BREAK 🚨🚨🚨🚨🚨
 
-    //* flagChecker(argc,argv) используем без flags 
+/*🏳️*/if(
+  flags.s == 0 &&
+  flags.b == 0 &&
+  flags.n == 0 &&
+  flags.e == 0 &&
+  flags.t == 0 &&
+  flags.err == 0 
+){
+  simplePrint(argc,argv);
+}
+
+
     printFile(flags,argc,argv);
 
   
