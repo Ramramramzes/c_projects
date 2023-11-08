@@ -1,5 +1,5 @@
 GCC = gcc
-FLAGS = -Wall -Wextra -Werror -std=c11
+FLAGS = -Wall -Wextra -Werror
 PROG = s21_cat
 
 AIM: gen clean
