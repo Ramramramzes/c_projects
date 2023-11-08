@@ -1,7 +1,8 @@
-
 my_cat/README_RUS.md
-my_cat/test
 my_cat/s21_cat
 my_cat/*.txt
+my_grep/README_RUS.md
+my_grep/s21_grep
+my_grep/*.txt
 .vscode
 .DS_Store
