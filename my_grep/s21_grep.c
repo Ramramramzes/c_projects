@@ -9,35 +9,11 @@
 //todo optind - индекс следующего аргумента при очередном вызове getopt - указывает на НЕ ОПЦИЮ (АРГУМЕНТ)
 
 #include "findMax.h"
+#include "flagChecker.h"
 
 int main(int argc, char *argv[]) {
-  //* Обработка флагов 🇷🇺
-  int opt;
-  while ((opt = getopt(argc, argv, "eivcln")) != -1) {
-    switch(opt) {
-      case 'e':
-        printf("Выбран %c\n", opt);
-      break;
-      case 'i':
-        printf("Выбран %c\n", opt);
-      break;
-      case 'v':
-        printf("Выбран %c\n", opt);
-      break;
-      case 'c':
-        printf("Выбран %c\n", opt);
-      break;
-      case 'l':
-        printf("Выбран %c\n", opt);
-      break;
-      case 'n':
-        printf("Выбран %c\n", opt);
-      break;
-      case '?':
-      printf("Неизвестный флаг: %c\n", optopt);
-      break;
-    }
-  }
+  Flags flags = flagChecker(argc,argv);
+  
   //* Обработка аргументов (файлов) 📁
   char **needArg = NULL; //* Создаем указатель на указатели (массив строк)
   int needArgCount = 0; //* Переменная для подсчета аргументов
@@ -59,7 +35,7 @@ int main(int argc, char *argv[]) {
   printf("Максимальная длинна строки файлов - %d",maxFileString);
   
 
-  
+
   free(needArg);
   exit(EXIT_SUCCESS);
 }
