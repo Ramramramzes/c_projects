@@ -8,7 +8,10 @@
 //todo optopt - символ неизвестной опции
 //todo optind - индекс следующего аргумента при очередном вызове getopt - указывает на НЕ ОПЦИЮ (АРГУМЕНТ)
 
+#include "findMax.h"
+
 int main(int argc, char *argv[]) {
+  //* Обработка флагов 🇷🇺
   int opt;
   while ((opt = getopt(argc, argv, "eivcln")) != -1) {
     switch(opt) {
@@ -31,22 +34,34 @@ int main(int argc, char *argv[]) {
         printf("Выбран %c\n", opt);
       break;
       case '?':
-      printf("Неизвестный флаг: %c\n", opt);
+      printf("Неизвестный флаг: %c\n", optopt);
       break;
     }
   }
-
+  //* Обработка аргументов (файлов) 📁
+  char **needArg = NULL; //* Создаем указатель на указатели (массив строк)
+  int needArgCount = 0; //* Переменная для подсчета аргументов
   for (int i = optind; i < argc; i++){
     FILE *file = fopen(argv[i], "r");
     if(file == NULL){
       printf("Файла с именем %s не существует\n",argv[i]);
     }else{
+      needArgCount++;
+      needArg = (char **)realloc(needArg, needArgCount * sizeof(char *));
+      needArg[needArgCount - 1] = strdup(argv[i]);  // Копируем строку в массив
       fclose(file);
       printf("argument: %s\n", argv[i]);
     }
   }
-    
-  exit(0);
+
+  int maxFileString = findStrSize(needArgCount,needArg);
+  
+  printf("Максимальная длинна строки файлов - %d",maxFileString);
+  
+
+  
+  free(needArg);
+  exit(EXIT_SUCCESS);
 }
 
 
