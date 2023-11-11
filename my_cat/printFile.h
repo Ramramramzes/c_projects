@@ -27,6 +27,8 @@ void printFile(Flags flagsObj, int argc, char *argv[]){
           if(circles >= 2){
             continue;
           }
+        }else if(ch == '\n' && !newRow){
+          circles = 0;
         }
       }
 /*🚩*/if(flagsObj.b == 1){
