@@ -14,8 +14,8 @@
 
 int main(int argc, char *argv[]) {
   Flags flags = flagChecker(argc,argv);
-  printf("%d",flags.e); //! Чтобы не крашилось
   //* Поиск искомого слова
+  //! Добавить работу с флагом -е/ после каждого -е идет шаблон с которым надо работать/ тут добавить - если флагов -е НЕТУ
     char *searchWord = NULL;
     for (int i = optind; i < argc; i++) {
         if (argv[i][0] != '-') {
@@ -32,7 +32,9 @@ int main(int argc, char *argv[]) {
     FILE *file = fopen(argv[i], "r");
     if(file == NULL){
       printf("Файла с именем %s не существует\n",argv[i]);
+      break;
     }else{
+      //! Вспомнить нахрена я делал - 1 (мб после выделения памяти убирал эффект от ++)
       needArgCount++;
       needArg = (char **)realloc(needArg, needArgCount * sizeof(char *));
       needArg[needArgCount - 1] = strdup(argv[i]);  // Копируем строку в массив
@@ -43,7 +45,7 @@ int main(int argc, char *argv[]) {
 
   int maxFileString = findStrSize(needArgCount,needArg);
   //!------------------------------------------------------------------------|
-  printFunc(argc,argv,maxFileString,searchWord); //! Основная функция вывода |
+  printFunc(needArgCount,needArg,maxFileString,searchWord,flags); //! Основная функция вывода |
   //!------------------------------------------------------------------------|
   // printf("Максимальная длинна строки файлов - %d\n",maxFileString); //! Вывод максимальной длины строки
   // printf("Слово для поиска - %s\n",searchWord); //! Вывод слова для поиска
