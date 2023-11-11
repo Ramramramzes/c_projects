@@ -14,6 +14,10 @@ void printFile(Flags flagsObj, int argc, char *argv[]){
   for(int i = 1; i < argc; i++){
     if(argv[i][0] != '-'){
       FILE *file = fopen(argv[i], "r");
+    if(file == NULL){
+      printf("Файл не найден");
+      break;
+    }
     char ch;
     int circles = 0;
     bool newRow = true;
@@ -35,7 +39,7 @@ void printFile(Flags flagsObj, int argc, char *argv[]){
 /*🚩*/if(flagsObj.b == 1){
         //* Циклами добавляю пробелы при использовании -b в cat выводится с пробелами 
         if(newRow && ch != '\n'){
-          fprintf(stdout,"     %d	",lineCount);//!🚨 После %d идет → TAB 
+          fprintf(stdout,"%6d	",lineCount);//!🚨 После %d идет → TAB 
           lineCount++;
         }else if(newRow){
           for (int k = 0; k < 8; k++){
@@ -47,7 +51,7 @@ void printFile(Flags flagsObj, int argc, char *argv[]){
 /*🚩*/if(flagsObj.n == 1 && flagsObj.b != 1){
         //* Циклами добавляю пробелы при использовании -b в cat выводится с пробелами 
         if(newRow){
-          fprintf(stdout,"     %d	",lineCount);//!🚨 После %d идет → TAB 
+          fprintf(stdout,"%6d	",lineCount);//!🚨 После %d идет → TAB 
           lineCount++;
         }
       }
