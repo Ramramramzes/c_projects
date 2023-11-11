@@ -23,9 +23,11 @@ int main(int argc, char *argv[]){
     flags.n == 0 &&
     flags.e == 0 &&
     flags.t == 0 &&
+    flags.v == 0 &&
     flags.err == 0 
   ){
     simplePrint(argv);
+    return 0;
   }
     printFile(flags,argc,argv);
   return 0;

@@ -11,8 +11,9 @@
 //* Фунция добавялет символы в stdout
 void printFile(Flags flagsObj, int argc, char *argv[]){
   //* Пропускаем ./a.out и -флаги начинаем с 2
-  for(int i = 2; i < argc; i++){
-    FILE *file = fopen(argv[i], "r");
+  for(int i = 1; i < argc; i++){
+    if(argv[i][0] != '-'){
+      FILE *file = fopen(argv[i], "r");
     char ch;
     int circles = 0;
     bool newRow = true;
@@ -70,6 +71,7 @@ void printFile(Flags flagsObj, int argc, char *argv[]){
       newRow = (ch == '\n');
       //* Каждую итерацию выводим в символ в stdout
       fputc(ch, stdout);
+    }
     }
   }
 

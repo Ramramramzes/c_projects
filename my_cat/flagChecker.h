@@ -9,16 +9,17 @@ typedef struct{
   int n;
   int s;
   int t;
+  int v;
   int err;
 } Flags;
 
 //* Создаем массив символов флагов 
-char *wordsArr[] = {"b","e","n","s","t"};
+char *wordsArr[] = {"b","e","n","s","t","v"};
 
 //* Создаем функцию которая на выходе выдаст структуру с результатами флагов
 Flags flagChecker(int argc,char *argv[]){
-  Flags flags = {0,0,0,0,0,0};
-  // char arr[1024];
+  Flags flags = {0,0,0,0,0,0,0};
+
   for(int i = 1; i < argc; i++){
     //* Проверка на верное введение флага, если 1 символ то err
     if(strlen(argv[i]) < 2){
@@ -28,6 +29,7 @@ Flags flagChecker(int argc,char *argv[]){
       flags.n = 0;
       flags.s = 0;
       flags.t = 0;
+      flags.v = 0;
       printf("Недопустимые значения флага");
       break;
     }   
@@ -56,6 +58,9 @@ Flags flagChecker(int argc,char *argv[]){
       case 't':
         flags.t = 1;
         break;
+      case 'v':
+        flags.v = 1;
+        break;
       default:
         flags.err = 1;
         flags.b = 0;
@@ -63,6 +68,7 @@ Flags flagChecker(int argc,char *argv[]){
         flags.n = 0;
         flags.s = 0;
         flags.t = 0;
+        flags.v = 0;
         printf("Недопустимые значения флага");
         break;
       }
@@ -107,6 +113,9 @@ Flags flagChecker(int argc,char *argv[]){
           case 'T':
             flags.t = 1;
             continue;
+          case 'v':
+            flags.v = 1;
+            continue;
           default:
             flags.err = 1;
             flags.b = 0;
@@ -114,13 +123,13 @@ Flags flagChecker(int argc,char *argv[]){
             flags.n = 0;
             flags.s = 0;
             flags.t = 0;
+            flags.v = 0;
             printf("Недопустимые значения флага");
             break;
           }
         }
       }
     }
-
   }
   return flags;
 }
