@@ -138,7 +138,12 @@ void printFunc(int argc, char *argv[],int maxFileString,char *searchWord, Flags 
     }
   }
 
-  if(!flags.s){
+  if(!flags.s && !flags.v){
+    for (int i = 0; i < errSize; i++){
+      printf("grep: %s: Нет такого файла или директории\n",err[i]);
+    }
+  }else if(!flags.s && flags.v){
+    printf("\n");
     for (int i = 0; i < errSize; i++){
       printf("grep: %s: Нет такого файла или директории\n",err[i]);
     }
