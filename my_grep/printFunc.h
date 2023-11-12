@@ -5,6 +5,7 @@
 
 void printFunc(int argc, char *argv[],int maxFileString,char *searchWord, Flags flags) {
   char **searchFiles = (char**)malloc(argc * sizeof(char*));
+  int lineNumArr[argc];
   for (int i = 0; i < argc; i++){
     FILE *file = fopen(argv[i],"r");
     if(file == NULL){
@@ -29,55 +30,80 @@ void printFunc(int argc, char *argv[],int maxFileString,char *searchWord, Flags 
       int lineNum = 0;
       int lineCount = 0;
       // char **searchFiles = (char**)malloc(argc * sizeof(char*));
-      if (flags.i && !flags.v) {
-        regexFlags |= REG_ICASE;
-        //* Плюсуем еще к строке название файла, а то не помещается вывод
+
+
         while (fgets(line,maxFileString+strlen(argv[i]),file)){
           lineCount++;
           regmatch_t pmatch[1];
+          if (flags.i && !flags.v) {
+            regexFlags |= REG_ICASE;
+          }
           if (regexec(&regex, line, 1, pmatch, 0) == 0) {
             //!  Данные которые тут вобью нужно использовать 3 раза -i / -v / -iv / без -iv
             //* Считаем строки совпадения
             lineNum++;
-            printf("%d - кол-во строк совпавших\n",lineNum);
+            // printf("%d - кол-во строк совпавших\n",lineNum);
             //* Добавляем файл в котором находим совпадения searchFiles;
             searchFiles[i] = argv[i];
-            //* Вывод строки файла если совпало
-            printf("%d: - номер совпавшей строки\n",lineCount);
-          }
-        }
-      }
-      
-      if (flags.i && flags.v) {
-        regexFlags |= REG_ICASE;
-        //* Плюсуем еще к строке название файла, а то не помещается вывод
-        while (fgets(line,maxFileString+strlen(argv[i]),file)){
-          regmatch_t pmatch[1];
-          if (regexec(&regex, line, 1, pmatch, 0) != 0) {
+
+            if(flags.n && !flags.c){
+              printf("%s:%d:%s",argv[i],lineCount,line);
+            }
+
+            if (flags.i && !flags.c && !flags.l && !flags.n) {
               printf("%s:%s", argv[i], line);
+            }
+            
           }
         }
-      }
+
+
+
+
+      
+      // if (flags.i && flags.v) {
+      //   regexFlags |= REG_ICASE;
+      //   //* Плюсуем еще к строке название файла, а то не помещается вывод
+      //   while (fgets(line,maxFileString+strlen(argv[i]),file)){
+      //     regmatch_t pmatch[1];
+      //     if (regexec(&regex, line, 1, pmatch, 0) != 0) {
+      //         printf("%s:%s", argv[i], line);
+      //     }
+      //   }
+      // }
 
       //* Добавляем перенос на следующую строку при переходе в новый файл
-      printf("\n");
 
       //* Закрытие файла и освобождение ресурсов
       fclose(file);
       //todo needArg[] - массив с файлами
       //todo flags - флаги
       //todo searchWord - шаблон (без -е пока работаю)
+      lineNumArr[i] = lineNum;
 
-
-    // printf("<%d>",lineCount);//! lineCount - это строки файл
+      // printf("<%d>",lineCount);//! lineCount - это строки файл
     }
     //! Вывод идет в конце каждого файла
   }
 
-  
-  for (int i = 0; i < argc; i++){
-    if(searchFiles[i] != NULL){
+  //! Файлы в которых найдено все 
+  if(flags.l && flags.c){
+    for (int i = 0; i < argc; i++){
+      printf("%s:1\n",argv[i]);
       printf("%s\n",searchFiles[i]);
+    }
+  }else{
+    if(flags.l){
+      for (int i = 0; i < argc; i++){
+        if(searchFiles[i] != NULL){
+          printf("%s\n",searchFiles[i]);
+        }
+      }
+    }
+    if(flags.c){
+      for (int i = 0; i < argc; i++){
+        printf("%s:%d\n",argv[i],lineNumArr[i]);
+      }
     }
   }
 }
