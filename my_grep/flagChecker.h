@@ -24,7 +24,8 @@ Flags flagChecker(int argc,char *argv[]){
   Flags flags = {0,0,0,0,0,0,0,0,0,0};
   //* Обработка флагов 🇷🇺
   int opt;
-  while ((opt = getopt(argc, argv, "eivclnhsfo")) != -1) {
+  //* Двоеточие вначале флагов - тихий режим, убирает оповещение об ошибках
+  while ((opt = getopt(argc, argv, ":eivclnhsfo")) != -1) {
     switch(opt) {
       case 'e':
         flags.e = 1;
@@ -57,7 +58,6 @@ Flags flagChecker(int argc,char *argv[]){
         flags.o = 1;
         break;
       case '?':
-        printf("Неизвестный флаг: %c\n", optopt);
         break;
     }
   }
