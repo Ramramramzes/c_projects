@@ -52,8 +52,13 @@ void printFunc(int argc, char *argv[],int maxFileString,char *searchWord, Flags 
                 printf("%s:%d:%s",argv[i],lineCount,line);
               }
 
-              if (flags.i && !flags.c && !flags.l && !flags.n) {
+              //* без -h
+              if (flags.i && !flags.h && !flags.c && !flags.l && !flags.n) {
                 printf("%s:%s", argv[i], line);
+              }
+              //* с -h
+              if (flags.i && flags.h && !flags.c && !flags.l && !flags.n) {
+                printf("%s", line);
               }
               
             }
@@ -69,9 +74,13 @@ void printFunc(int argc, char *argv[],int maxFileString,char *searchWord, Flags 
               if(flags.n && !flags.c){
                 printf("%s:%d:%s",argv[i],lineCount,line);
               }
-
-              if (flags.i && !flags.c && !flags.l && !flags.n) {
+              //* без -h
+              if (flags.i && !flags.h && !flags.c && !flags.l && !flags.n) {
                 printf("%s:%s", argv[i], line);
+              }
+              //* с -h
+              if (flags.i && flags.h && !flags.c && !flags.l && !flags.n) {
+                printf("%s", line);
               }
 
               if (flags.v && !flags.i && !flags.c && !flags.l && !flags.n) {
@@ -102,10 +111,16 @@ void printFunc(int argc, char *argv[],int maxFileString,char *searchWord, Flags 
     //! Вывод идет в конце каждого файла
   }
 
-  //! Файлы в которых найдено все 
-  if(flags.l && flags.c){
+  //! Файлы в которых найдено все
+  //* без -h
+  if(flags.l && flags.c && !flags.h){
     for (int i = 0; i < argc; i++){
       printf("%s:1\n",argv[i]);
+      printf("%s\n",searchFiles[i]);
+    }
+  }else if(flags.l && flags.c && flags.h){
+        for (int i = 0; i < argc; i++){
+      printf("1\n");
       printf("%s\n",searchFiles[i]);
     }
   }else{
@@ -116,9 +131,16 @@ void printFunc(int argc, char *argv[],int maxFileString,char *searchWord, Flags 
         }
       }
     }
-    if(flags.c){
+    //* без -h
+    if(flags.c && !flags.h){
       for (int i = 0; i < argc; i++){
         printf("%s:%d\n",argv[i],lineNumArr[i]);
+      }
+    }
+    //* c -h
+    if(flags.c && flags.h){
+      for (int i = 0; i < argc; i++){
+        printf("%d\n",lineNumArr[i]);
       }
     }
   }
