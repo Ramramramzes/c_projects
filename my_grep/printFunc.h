@@ -35,44 +35,60 @@ void printFunc(int argc, char *argv[],int maxFileString,char *searchWord, Flags 
         while (fgets(line,maxFileString+strlen(argv[i]),file)){
           lineCount++;
           regmatch_t pmatch[1];
-          if (flags.i && !flags.v) {
+
+          if (flags.i) {
             regexFlags |= REG_ICASE;
           }
-          if (regexec(&regex, line, 1, pmatch, 0) == 0) {
-            //!  Данные которые тут вобью нужно использовать 3 раза -i / -v / -iv / без -iv
-            //* Считаем строки совпадения
-            lineNum++;
-            // printf("%d - кол-во строк совпавших\n",lineNum);
-            //* Добавляем файл в котором находим совпадения searchFiles;
-            searchFiles[i] = argv[i];
+          if(!flags.v){
+            //* Если флага -v НЕТ
+            if (regexec(&regex, line, 1, pmatch, 0) == 0) {
+              //* Считаем строки совпадения
+              lineNum++;
+              // printf("%d - кол-во строк совпавших\n",lineNum);
+              //* Добавляем файл в котором находим совпадения searchFiles;
+              searchFiles[i] = argv[i];
 
-            if(flags.n && !flags.c){
-              printf("%s:%d:%s",argv[i],lineCount,line);
-            }
+              if(flags.n && !flags.c){
+                printf("%s:%d:%s",argv[i],lineCount,line);
+              }
 
-            if (flags.i && !flags.c && !flags.l && !flags.n) {
-              printf("%s:%s", argv[i], line);
+              if (flags.i && !flags.c && !flags.l && !flags.n) {
+                printf("%s:%s", argv[i], line);
+              }
+              
             }
-            
+          }else{
+            //* Если флаг -v 
+            if (regexec(&regex, line, 1, pmatch, 0) != 0) {
+              //* Считаем строки совпадения
+              lineNum++;
+              // printf("%d - кол-во строк совпавших\n",lineNum);
+              //* Добавляем файл в котором находим совпадения searchFiles;
+              searchFiles[i] = argv[i];
+
+              if(flags.n && !flags.c){
+                printf("%s:%d:%s",argv[i],lineCount,line);
+              }
+
+              if (flags.i && !flags.c && !flags.l && !flags.n) {
+                printf("%s:%s", argv[i], line);
+              }
+
+              if (flags.v && !flags.i && !flags.c && !flags.l && !flags.n) {
+                printf("%s:%s", argv[i], line);
+              }
+            }
           }
         }
 
 
 
 
-      
-      // if (flags.i && flags.v) {
-      //   regexFlags |= REG_ICASE;
-      //   //* Плюсуем еще к строке название файла, а то не помещается вывод
-      //   while (fgets(line,maxFileString+strlen(argv[i]),file)){
-      //     regmatch_t pmatch[1];
-      //     if (regexec(&regex, line, 1, pmatch, 0) != 0) {
-      //         printf("%s:%s", argv[i], line);
-      //     }
-      //   }
-      // }
 
       //* Добавляем перенос на следующую строку при переходе в новый файл
+      if(flags.v && i != argc-1 && !flags.c && !flags.l){
+        printf("\n");
+      }
 
       //* Закрытие файла и освобождение ресурсов
       fclose(file);
