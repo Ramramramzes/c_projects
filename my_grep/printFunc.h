@@ -33,8 +33,9 @@ void printFunc(int argc, char *argv[],int maxFileString,char *searchWord, Flags 
         if (flags.i) {
           regexFlags |= REG_ICASE;
         }
-        if(!flags.v){
-          //* Если флага -v НЕТ
+
+        int matchResult = flags.v ? regexec(&regex, line, 1, pmatch, 0) != 0 : regexec(&regex, line, 1, pmatch, 0) == 0;
+        if(matchResult){
           if (regexec(&regex, line, 1, pmatch, 0) == 0) {
             //* Считаем строки совпадения
             lineNum++;
@@ -43,42 +44,21 @@ void printFunc(int argc, char *argv[],int maxFileString,char *searchWord, Flags 
             searchFiles[i] = argv[i];
 
             if(flags.n && !flags.c){
-              printf("%s:%d:%s",argv[i],lineCount,line);
+              argc > 1 ? printf("%s:%d:%s",argv[i],lineCount,line) : printf("%d:%s",lineCount,line);
             }
 
             //* без -h
             if (flags.i && !flags.h && !flags.c && !flags.l && !flags.n) {
-              printf("%s:%s", argv[i], line);
+              argc > 1 ? printf("%s:%s", argv[i], line) : printf("%s",line);
             }
+
             //* с -h
             if (flags.i && flags.h && !flags.c && !flags.l && !flags.n) {
               printf("%s", line);
             }
             
-          }
-        }else{
-          //* Если флаг -v 
-          if (regexec(&regex, line, 1, pmatch, 0) != 0) {
-            //* Считаем строки совпадения
-            lineNum++;
-            // printf("%d - кол-во строк совпавших\n",lineNum);
-            //* Добавляем файл в котором находим совпадения searchFiles;
-            searchFiles[i] = argv[i];
-
-            if(flags.n && !flags.c){
-              printf("%s:%d:%s",argv[i],lineCount,line);
-            }
-            //* без -h
-            if (flags.i && !flags.h && !flags.c && !flags.l && !flags.n) {
-              printf("%s:%s", argv[i], line);
-            }
-            //* с -h
-            if (flags.i && flags.h && !flags.c && !flags.l && !flags.n) {
-              printf("%s", line);
-            }
-
-            if (flags.v && !flags.i && !flags.c && !flags.l && !flags.n) {
-              printf("%s:%s", argv[i], line);
+            if(!flags.i && !flags.c && !flags.l && !flags.n){
+              printf("%s",line);
             }
           }
         }
