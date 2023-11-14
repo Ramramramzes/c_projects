@@ -26,20 +26,18 @@ void printFunc(int argc, char *argv[],int maxFileString,char *searchWord, Flags 
 
       while (fgets(line,maxFileString+strlen(argv[i]),file)){
         lineCount++;
-        bool eflag = true;
 
-        int boolCount = flags.e ? flags.eCounter : 1;
-
-        regmatch_t pmatch[1];
         regex_t regex;
 
-        for (int k = 0; k < boolCount; k++){
-          if(boolCount == 1){
-            regcomp(&regex, searchWord, regexFlags);
-            if(regexec(&regex, line, 1, pmatch, 0) == 0){
-              printf("%s", line);
-            }
+        if (flags.i) {
+          regexFlags |= REG_ICASE;
+        }
 
+        int boolCount = flags.e ? flags.eCounter : 0;
+
+          regmatch_t pmatch[1];
+          if(boolCount == 0){
+            regcomp(&regex, searchWord, regexFlags);//* regcomp идет перед regexec;
             int matchResult = flags.v ? regexec(&regex, line, 1, pmatch, 0) != 0 : regexec(&regex, line, 1, pmatch, 0) == 0;
             if(matchResult){
               //* Считаем строки совпадения
@@ -67,40 +65,18 @@ void printFunc(int argc, char *argv[],int maxFileString,char *searchWord, Flags 
               }
             }
           }else{
-
-              
-            for (int j = 0; j < flags.eCounter; j++){
-              regcomp(&regex, flags.eArgArr[j], regexFlags);
-              if(regexec(&regex, line, 1, pmatch, 0) == 0){
-                if(eflag){
-                  eflag = false;
-                  printf("%s", line);
-                }
+            for (int k = 0; k < flags.eCounter; k++){
+              regcomp(&regex, flags.eArgArr[k], regexFlags);
+              if(strstr(line,flags.eArgArr[k])){
+                printf("%s",line);
+                break;
               }
             }
           }
-
         }
-
-
-
-
-
-
-
-
-        if (flags.i) {
-          regexFlags |= REG_ICASE;
-        }
-
-
-      }
-
-
-
-
 
     //* Добавляем перенос на следующую строку при переходе в новый файл
+    //! Поправить проблему с -ivhcl || -ivhc
     if(flags.v && i != argc-1 && !flags.c && !flags.l){
       printf("\n");
     }
@@ -111,7 +87,6 @@ void printFunc(int argc, char *argv[],int maxFileString,char *searchWord, Flags 
     //todo flags - флаги
     //todo searchWord - шаблон (без -е пока работаю)
     lineNumArr[i] = lineNum;
-
   }
 
   //! Файлы в которых найдено все
