@@ -9,14 +9,10 @@ void printFunc(int argc, char *argv[],int maxFileString,char *searchWord, Flags 
   for (int i = 0; i < argc; i++){
     FILE *file = fopen(argv[i],"r");
     //* Компиляция регулярного выражения
-    regex_t regex;
+    
     int regexFlags = flags.i ? REG_ICASE : 0;
     
-    if (regcomp(&regex, searchWord, regexFlags) != 0) {
-        fprintf(stderr, "Ошибка компиляции регулярного выражения\n");
-        exit(EXIT_FAILURE);
-    }
-
+    // ! ------------->>> НАЧИНАЮ
     if(flags.n){
       maxFileString += 20;
     }
@@ -26,42 +22,78 @@ void printFunc(int argc, char *argv[],int maxFileString,char *searchWord, Flags 
     int lineNum = 0;
     int lineCount = 0;
 
+
+
       while (fgets(line,maxFileString+strlen(argv[i]),file)){
         lineCount++;
+        bool eflag = true;
+
+        int boolCount = flags.e ? flags.eCounter : 1;
+
         regmatch_t pmatch[1];
+        regex_t regex;
+
+        for (int k = 0; k < boolCount; k++){
+          if(boolCount == 1){
+            regcomp(&regex, searchWord, regexFlags);
+            if(regexec(&regex, line, 1, pmatch, 0) == 0){
+              printf("%s", line);
+            }
+
+            int matchResult = flags.v ? regexec(&regex, line, 1, pmatch, 0) != 0 : regexec(&regex, line, 1, pmatch, 0) == 0;
+            if(matchResult){
+              //* Считаем строки совпадения
+              lineNum++;
+              // printf("%d - кол-во строк совпавших\n",lineNum);
+              //* Добавляем файл в котором находим совпадения searchFiles;
+              searchFiles[i] = argv[i];
+
+              if(flags.n && !flags.c){
+                argc > 1 ? printf("%s:%d:%s",argv[i],lineCount,line) : printf("%d:%s",lineCount,line);
+              }
+
+              //* без -h
+              if (flags.i && !flags.h && !flags.c && !flags.l && !flags.n) {
+                argc > 1 ? printf("%s:%s", argv[i], line) : printf("%s",line);
+              }
+
+              //* с -h
+              if (flags.i && flags.h && !flags.c && !flags.l && !flags.n) {
+                printf("%s", line);
+              }
+              
+              if(!flags.i && !flags.c && !flags.l && !flags.n){
+                printf("%s",line);
+              }
+            }
+          }else{
+
+              
+            for (int j = 0; j < flags.eCounter; j++){
+              regcomp(&regex, flags.eArgArr[j], regexFlags);
+              if(regexec(&regex, line, 1, pmatch, 0) == 0){
+                if(eflag){
+                  eflag = false;
+                  printf("%s", line);
+                }
+              }
+            }
+          }
+
+        }
+
+
+
+
+
+
+
 
         if (flags.i) {
           regexFlags |= REG_ICASE;
         }
 
-        int matchResult = flags.v ? regexec(&regex, line, 1, pmatch, 0) != 0 : regexec(&regex, line, 1, pmatch, 0) == 0;
-        if(matchResult){
-          if (regexec(&regex, line, 1, pmatch, 0) == 0) {
-            //* Считаем строки совпадения
-            lineNum++;
-            // printf("%d - кол-во строк совпавших\n",lineNum);
-            //* Добавляем файл в котором находим совпадения searchFiles;
-            searchFiles[i] = argv[i];
 
-            if(flags.n && !flags.c){
-              argc > 1 ? printf("%s:%d:%s",argv[i],lineCount,line) : printf("%d:%s",lineCount,line);
-            }
-
-            //* без -h
-            if (flags.i && !flags.h && !flags.c && !flags.l && !flags.n) {
-              argc > 1 ? printf("%s:%s", argv[i], line) : printf("%s",line);
-            }
-
-            //* с -h
-            if (flags.i && flags.h && !flags.c && !flags.l && !flags.n) {
-              printf("%s", line);
-            }
-            
-            if(!flags.i && !flags.c && !flags.l && !flags.n){
-              printf("%s",line);
-            }
-          }
-        }
       }
 
 
@@ -80,8 +112,6 @@ void printFunc(int argc, char *argv[],int maxFileString,char *searchWord, Flags 
     //todo searchWord - шаблон (без -е пока работаю)
     lineNumArr[i] = lineNum;
 
-    // printf("<%d>",lineCount);//! lineCount - это строки файл
-    //! Вывод идет в конце каждого файла
   }
 
   //! Файлы в которых найдено все
