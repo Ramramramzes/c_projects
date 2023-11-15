@@ -21,22 +21,16 @@ void printFunc(int argc, char *argv[],int maxFileString,char *searchWord, Flags 
     //todo добавим такой же while для -v только != 0
     int lineNum = 0;
     int lineCount = 0;
-
-
-
       while (fgets(line,maxFileString+strlen(argv[i]),file)){
-        lineCount++;
-
         regex_t regex;
-
-        if (flags.i) {
-          regexFlags |= REG_ICASE;
-        }
-
+        lineCount++;
+        int matchResult; //* для нескольких флагов -e
         int boolCount = flags.e ? flags.eCounter : 0;
-
           regmatch_t pmatch[1];
           if(boolCount == 0){
+            if (flags.i) {
+              regexFlags |= REG_ICASE;
+            }
             regcomp(&regex, searchWord, regexFlags);//* regcomp идет перед regexec;
             int matchResult = flags.v ? regexec(&regex, line, 1, pmatch, 0) != 0 : regexec(&regex, line, 1, pmatch, 0) == 0;
             if(matchResult){
@@ -65,11 +59,22 @@ void printFunc(int argc, char *argv[],int maxFileString,char *searchWord, Flags 
               }
             }
           }else{
-            for (int k = 0; k < flags.eCounter; k++){
-              regcomp(&regex, flags.eArgArr[k], regexFlags);
-              if(strstr(line,flags.eArgArr[k])){
-                printf("%s",line);
-                break;
+            matchResult = 0;
+            for (int k = 0; k < flags.eCounter; k++) {
+                regcomp(&regex, flags.eArgArr[k], regexFlags);
+                if (strstr(line, flags.eArgArr[k])) {
+                    matchResult = 1;
+                    break;
+                }
+            }
+            if (flags.v ? !matchResult : matchResult){
+              int matchResult = flags.v ? regexec(&regex, line, 1, pmatch, 0) != 0 : regexec(&regex, line, 1, pmatch, 0) == 0;
+              if(matchResult){
+                argc > 1 ? printf("%s:%s", argv[i], line) : printf("%s",line);
+                //* Считаем строки совпадения
+                lineNum++;
+                //* Добавляем файл в котором находим совпадения searchFiles;
+                searchFiles[i] = argv[i];
               }
             }
           }
