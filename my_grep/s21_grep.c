@@ -3,8 +3,11 @@
 #include <stdbool.h>
 #include <string.h>
 #include <unistd.h>
+#include <ctype.h>
+#include "regex.h"
 
 #include "flagChecker.h"
+// #include "printFile.h"
 
 int main(int argc, char *argv[]) {
   Flags flags = flagChecker(argc,argv);
@@ -59,16 +62,63 @@ int main(int argc, char *argv[]) {
     }
   }
 
-  for (int i = 0; i < fromComCount ; i++){
-    printf("%s\n",filesFromCom[i]);
+
+
+
+
+//! Обычный вывод grep без флагов
+  if (searchWord != NULL && filesFromCom != NULL) {
+    int maxStrSize = findStrSize(argc,argv);
+    char line[maxStrSize];
+
+    for (int k = 0; k < fromComCount; k++){
+      FILE *file = fopen(filesFromCom[k],"r");
+      while (fgets(line,maxStrSize,file)){
+        if(strstr(line, searchWord) != NULL){
+          printf("%s",line);
+        }
+      }
+      fclose(file);
+    }
   }
-  // for (int i = 0; i < flags.fileSearchCount ; i++){
-  //   printf("%s\n",flags.fileSearchWords[i]);
-  // }
-  // for (int i = 0; i < flags.eCounter ; i++){
-  //   printf("%s\n",flags.eArgArr[i]);
-  // }
-  // printf("\n%s",searchWord);
+
+
+//! Вывод grep с флагом -i
+    if(flags.i){
+      int maxStrSize = findStrSize(argc,argv);
+      char line[maxStrSize];
+
+      for (int k = 0; k < fromComCount; k++){
+        FILE *file = fopen(filesFromCom[k],"r");
+
+        int regexFlags = 0;
+        regex_t regex;
+        regexFlags |= REG_ICASE;
+
+        if (regcomp(&regex, searchWord, regexFlags) != 0) {
+          fprintf(stderr, "Ошибка компиляции регулярного выражения\n");
+          exit(EXIT_FAILURE);
+        }
+
+
+        while (fgets(line,maxStrSize,file)){
+          regmatch_t pmatch[1];
+          if (regexec(&regex, line, 1, pmatch, 0) == 0) {
+              printf("%s", line);
+          }
+        }
+
+        fclose(file);
+      }
+    }
+  
+
+
+
+
+  //! Функции для декомпозиции
+  // printFile(argc,argv,flags,filesFromCom,fromComCount,searchWord);
+
 }
 
 

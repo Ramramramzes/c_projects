@@ -12,21 +12,19 @@ int findStrSize(int argc,char *argv[]){
     for (int i = 0; i < argc; i++){
       FILE *file = fopen(argv[i], "r");
       char ch;
-    if(file){
-      while((ch = fgetc(file)) != EOF){
-      if(ch != '\n'){
-        maxCounter++;
-        if(maxLength < maxCounter){
-          maxLength = maxCounter;
+      if(file){
+        while((ch = fgetc(file)) != EOF){
+        if(ch == '\n'){
+          maxCounter++;
+          if(maxLength < maxCounter){
+            maxLength = maxCounter;
+          }
         }
-      }else if(ch == '\n'){
-        maxCounter = 0;
       }
-    }
     }
   }
 
-  return maxLength;
+  return ++maxLength;
 }
 
 #endif

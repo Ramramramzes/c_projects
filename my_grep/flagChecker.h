@@ -41,18 +41,20 @@ Flags flagChecker(int argc,char *argv[]){
   for (int i = 1; i < argc; i++){
     bool eflagBool = false;
     //* Флаги идут по одному 1️⃣    
-    if(argv[i][0] == '-' && strlen(argv[i]) == 2 && argv[i][1] == 'f'){
-      FILE *file = fopen(argv[i+1],"r");
-      if(file){
-        //* Выделяем максимальное значение для буфера исходя из всех файлов 
-        char line[findStrSize(argc,argv)];
-        while(fgets(line,sizeof(line),file)){
-          flags.fileSearchCount++;
-          flags.fileSearchWords = (char **)realloc(flags.fileSearchWords, flags.fileSearchCount * sizeof(char *));
-          flags.fileSearchWords[flags.fileSearchCount - 1] = strdup(line);
+    if(argv[i][0] == '-' && strlen(argv[i]) == 2){
+      if(argv[i][1] == 'f'){
+        FILE *file = fopen(argv[i+1],"r");
+        if(file){
+          //* Выделяем максимальное значение для буфера исходя из всех файлов 
+          char line[findStrSize(argc,argv)];
+          while(fgets(line,sizeof(line),file)){
+            flags.fileSearchCount++;
+            flags.fileSearchWords = (char **)realloc(flags.fileSearchWords, flags.fileSearchCount * sizeof(char *));
+            flags.fileSearchWords[flags.fileSearchCount - 1] = strdup(line);
+          }
         }
+        fclose(file);
       }
-      fclose(file);
 
       switch(argv[i][1]) {
         case 'e':
