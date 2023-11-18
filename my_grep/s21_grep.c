@@ -8,6 +8,7 @@
 
 #include "flagChecker.h"
 #include "print.h"
+#include "printFunc.h"
 
 int main(int argc, char *argv[]) {
   Flags flags = flagChecker(argc,argv);
@@ -88,43 +89,47 @@ int main(int argc, char *argv[]) {
           regcomp(&regex, searchWord, regexFlags);
         }
 
+        int strNumber = 0;
+        int strCounter = 0;
         while (fgets(line,maxStrSize,file)){ //! Исправить ошибку пустых строк(убрать вывод)
           regmatch_t pmatch[1];
           bool wasPrint = false;
           bool flagV = false;
+          strNumber++;
           for (int l = 0; l < flags.eCounter; l++){
             regcomp(&regex, flags.eArgArr[l], regexFlags);
-            
             if(!flags.v){
               if (regexec(&regex, line, 1, pmatch, 0) == 0) {
+                strCounter++;
                 if(wasPrint){
                   continue;
                 }else{
                   if(l == flags.eCounter-1){
-                    printf("%s", line);
+                    myMainPrint(flags,strNumber,line,filesFromCom[k],fromComCount);
                     wasPrint = true;
                   }else{
-                    printf("%s", line);
+                    myMainPrint(flags,strNumber,line,filesFromCom[k],fromComCount);
                     wasPrint = true;
                   }
                 }
               }
             }else if(flags.v){
               if (regexec(&regex, line, 1, pmatch, 0) == 0) {
+                strCounter++;
                 flagV = true;
               }
             }
           }
 
           if(!flagV && flags.v){
-            printf("%s",line);
+            myMainPrint(flags,strNumber,line,filesFromCom[k],fromComCount);
           }
 
 
 
         }//! конец цикла while
         
-
+          printf("%d",strCounter);
         fclose(file);
       }
   
