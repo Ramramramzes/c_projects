@@ -7,7 +7,7 @@
 #include <string.h>
 
 void myMainPrint(Flags flags,int strNumber,char* str,char* filename,int fileArrCount){
-  if(fileArrCount > 1){
+  if(fileArrCount > 1 && !flags.h){
     printf("%s:",filename);
   }
   if(flags.n){
