@@ -1,7 +1,7 @@
 //* добавляем FLAG_CHECKER_H в предпроцессор 🛠️
 #ifndef FLAG_CHECKER_H
 #define FLAG_CHECKER_H
-#include "findMax.h"
+#include "findMaxMy.h"
 
 //* Создаем структуру с переменными флагов 0 - 1
 typedef struct{
@@ -116,7 +116,7 @@ Flags flagChecker(int argc,char *argv[]){
         if(file){
           //* Выделяем максимальное значение для буфера исходя из всех файлов 
           char line[findStrSize(argc,argv)];
-          while(fgets(line,sizeof(line),file)){ //! проблема тут
+          while(fgets(line,sizeof(line),file)){
             flags.fileSearchCount++;
             flags.fileSearchWords = (char **)realloc(flags.fileSearchWords, flags.fileSearchCount * sizeof(char *));
             flags.fileSearchWords[flags.fileSearchCount - 1] = strdup(line);

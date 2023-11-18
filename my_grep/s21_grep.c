@@ -7,11 +7,12 @@
 #include "regex.h"
 
 #include "flagChecker.h"
-// #include "printFile.h"
+#include "print.h"
 
 int main(int argc, char *argv[]) {
   Flags flags = flagChecker(argc,argv);
-
+  int maxStrSize = findStrSize(argc,argv);
+  // printf("%d",maxStrSize);
   //* Если флагов нет, первый эллемент будет искомым остальное все обрабатывается как файлы, если нет то в эррор(мб вынести)
   bool noFlag = true;
   for (int i = 1; i < argc; i++){
@@ -67,25 +68,10 @@ int main(int argc, char *argv[]) {
 
 
 //! Обычный вывод grep без флагов
-  if (searchWord != NULL && filesFromCom != NULL) {
-    int maxStrSize = findStrSize(argc,argv);
-    char line[maxStrSize];
-
-    for (int k = 0; k < fromComCount; k++){
-      FILE *file = fopen(filesFromCom[k],"r");
-      while (fgets(line,maxStrSize,file)){
-        if(strstr(line, searchWord) != NULL){
-          printf("%s",line);
-        }
-      }
-      fclose(file);
-    }
-  }
+  // basePrint(searchWord,filesFromCom,fromComCount,maxStrSize);
 
 
 //! Вывод grep с флагом -i
-    if(flags.i){
-      int maxStrSize = findStrSize(argc,argv);
       char line[maxStrSize];
 
       for (int k = 0; k < fromComCount; k++){
@@ -93,24 +79,54 @@ int main(int argc, char *argv[]) {
 
         int regexFlags = 0;
         regex_t regex;
-        regexFlags |= REG_ICASE;
 
-        if (regcomp(&regex, searchWord, regexFlags) != 0) {
-          fprintf(stderr, "Ошибка компиляции регулярного выражения\n");
-          exit(EXIT_FAILURE);
+        if(flags.i){
+          regexFlags |= REG_ICASE;
         }
 
+        if(!flags.e && !flags.f){
+          regcomp(&regex, searchWord, regexFlags);
+        }
 
-        while (fgets(line,maxStrSize,file)){
+        while (fgets(line,maxStrSize,file)){ //! Исправить ошибку пустых строк(убрать вывод)
           regmatch_t pmatch[1];
-          if (regexec(&regex, line, 1, pmatch, 0) == 0) {
-              printf("%s", line);
+          bool wasPrint = false;
+          bool flagV = false;
+          for (int l = 0; l < flags.eCounter; l++){
+            regcomp(&regex, flags.eArgArr[l], regexFlags);
+            
+            if(!flags.v){
+              if (regexec(&regex, line, 1, pmatch, 0) == 0) {
+                if(wasPrint){
+                  continue;
+                }else{
+                  if(l == flags.eCounter-1){
+                    printf("%s", line);
+                    wasPrint = true;
+                  }else{
+                    printf("%s", line);
+                    wasPrint = true;
+                  }
+                }
+              }
+            }else if(flags.v){
+              if (regexec(&regex, line, 1, pmatch, 0) == 0) {
+                flagV = true;
+              }
+            }
           }
-        }
+
+          if(!flagV && flags.v){
+            printf("%s",line);
+          }
+
+
+
+        }//! конец цикла while
+        
 
         fclose(file);
       }
-    }
   
 
 
