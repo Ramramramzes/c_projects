@@ -5,11 +5,13 @@
 #include <unistd.h>
 #include <ctype.h>
 #include "regex.h"
-
+//* Старые версии
 #include "flagChecker.h"
 #include "print.h"
 #include "printNFunc.h"
 #include "printCLFunc.h"
+//* Новые версии
+#include "grepPrint.h"
 
 int main(int argc, char *argv[]) {
   Flags flags = flagChecker(argc,argv);
@@ -52,16 +54,12 @@ int main(int argc, char *argv[]) {
     }
   }
 
+
+  grepPrint(flags,argc,argv,patterns,patternsLen,allFiles,filesLen);
   // for (int i = 0; i < patternsLen; i++){
   //   printf("Pat - %s\n",patterns[i]);
   // }
-  // for (int i = 0; i < filesLen; i++){
-  //   printf("File - %s\n",allFiles[i]);
-  // }
+  
 
   // printf("%d",flags.e);
 }
-
-
-
-
