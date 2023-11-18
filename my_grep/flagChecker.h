@@ -170,15 +170,6 @@ Flags flagChecker(int argc,char *argv[]){
       }
     }
   }
-
-
-  if(flags.e && flags.f){
-    flags.eArgArr = (char **)realloc(flags.eArgArr,flags.fileSearchCount * sizeof(char *));
-    for (int i = 0; i < flags.fileSearchCount; i++){
-      flags.eArgArr[flags.eCounter + i] = flags.fileSearchWords[i];
-    }
-    flags.eCounter += flags.fileSearchCount;
-  }
   
   return flags;
 }

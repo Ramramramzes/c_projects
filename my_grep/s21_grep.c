@@ -9,11 +9,26 @@
 #include "flagChecker.h"
 #include "print.h"
 #include "printFunc.h"
+#include "printCLFunc.h"
 
 int main(int argc, char *argv[]) {
   Flags flags = flagChecker(argc,argv);
+  if(flags.f){
+    flags.e = 1;
+  }
   int maxStrSize = findStrSize(argc,argv);
-  // printf("%d",maxStrSize);
+
+
+        //* Сращиваем е и f
+      if(flags.e && flags.f){
+        flags.eArgArr = (char **)realloc(flags.eArgArr,(flags.fileSearchCount+flags.eCounter) * sizeof(char *));
+        for (int i = 0; i < flags.fileSearchCount; i++){
+          flags.eArgArr[flags.eCounter + i] = flags.fileSearchWords[i];
+        }
+        flags.eCounter += flags.fileSearchCount;
+      }
+
+
   //* Если флагов нет, первый эллемент будет искомым остальное все обрабатывается как файлы, если нет то в эррор(мб вынести)
   bool noFlag = true;
   for (int i = 1; i < argc; i++){
@@ -33,9 +48,11 @@ int main(int argc, char *argv[]) {
       filesFromCom[fromComCount] = argv[i];
       fromComCount++;
     }
+    basePrint(searchWord,filesFromCom,fromComCount,maxStrSize);
   //* Если флаги есть
   }else{
     filesFromCom =(char**)calloc(argc,sizeof(char*));
+    
     //* Находим искомое слово если нет e и f
     if(!flags.e && !flags.f){
       for (int i = 1; i < argc; i++){
@@ -44,7 +61,7 @@ int main(int argc, char *argv[]) {
         }//! Добавить сюда обработку error, добавить массив ошибок для вывода
       }
     }
-    //* Ищем файлы в которых будет проиходить поиск
+    //* Ищем файлы в которых будет проиcходить поиск
     for (int i = 1; i < argc; i++){
       if(argv[i][0] != '-' && argv[i] != searchWord){
         //* проверим есть ли слово уже в массиве
@@ -57,6 +74,9 @@ int main(int argc, char *argv[]) {
         }
         FILE *file = fopen(argv[i],"r");
         if(file && isInfiles == false){
+          if(argv[i-1][0] == '-' && argv[i-1][(int)strlen(argv[i-1])-1] == 'f'){
+            continue;
+          }
           filesFromCom[fromComCount] = argv[i];
           fromComCount++;
         }
@@ -68,11 +88,9 @@ int main(int argc, char *argv[]) {
 
 
 
-//! Обычный вывод grep без флагов
-  // basePrint(searchWord,filesFromCom,fromComCount,maxStrSize);
 
 
-//! Вывод grep с флагом -i
+      //! Вывод grep с флагом -i
       char line[maxStrSize];
 
       for (int k = 0; k < fromComCount; k++){
@@ -105,10 +123,14 @@ int main(int argc, char *argv[]) {
                   continue;
                 }else{
                   if(l == flags.eCounter-1){
-                    myMainPrint(flags,strNumber,line,filesFromCom[k],fromComCount);
+                    if(!flags.c && !flags.l){
+                      myMainPrint(flags,strNumber,line,filesFromCom[k],fromComCount);
+                    }
                     wasPrint = true;
                   }else{
-                    myMainPrint(flags,strNumber,line,filesFromCom[k],fromComCount);
+                    if(!flags.c && !flags.l){
+                      myMainPrint(flags,strNumber,line,filesFromCom[k],fromComCount);
+                    }
                     wasPrint = true;
                   }
                 }
@@ -120,25 +142,34 @@ int main(int argc, char *argv[]) {
               }
             }
           }
+          
 
           if(!flagV && flags.v){
-            myMainPrint(flags,strNumber,line,filesFromCom[k],fromComCount);
+            if(!flags.c && !flags.l){
+              myMainPrint(flags,strNumber,line,filesFromCom[k],fromComCount);
+            }
           }
 
 
 
         }//! конец цикла while
-        
-          printf("%d",strCounter);
+        if(flags.c || flags.l){
+          myCLprint(flags,strCounter,filesFromCom[k],fromComCount);
+          continue;
+        }
+        if(k != fromComCount-1){
+          printf("\n");
+        }
         fclose(file);
       }
   
+    if(flags.f){
+      printf("\n");
+    }
 
 
 
 
-  //! Функции для декомпозиции
-  // printFile(argc,argv,flags,filesFromCom,fromComCount,searchWord);
 
 }
 
