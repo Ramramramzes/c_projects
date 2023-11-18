@@ -26,9 +26,7 @@ int findStrSize(int argc,char *argv[]){
       }
     }
   }
-
   return maxLength + 10;
-
 }
 
 #endif
