@@ -68,7 +68,7 @@ void grepPrint(Flags flags,int argc, char *argv[],char* patterns[],int patternsL
   }
 
 
-  if(!flags.c && !flags.l){
+  if(!flags.c && !flags.l && !flags.i && !flags.n){
     printf("\n");
   }
 
