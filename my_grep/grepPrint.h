@@ -66,18 +66,7 @@ void grepPrint(Flags flags,int argc, char *argv[],char* patterns[],int patternsL
 
     fclose(file);
   }
-
-
-  if(!flags.c && !flags.l && !flags.i && !flags.n){
-    printf("\n");
-  }
-
 }
 
 
 #endif
-
-//  if(flags.c || flags.l){
-//         myCLprint(flags,strCounter,files[i],filesLen);
-//         continue;
-//       }
