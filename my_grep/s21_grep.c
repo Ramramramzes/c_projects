@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
       patternsLen++;
       continue;
     }
-    if(flags.allFlags && !flags.e && argv[i][0] != '-'){
+    if(flags.allFlags && !flags.e && argv[i][0] != '-' && patterns[0] == NULL){
       patterns[patternsLen] = (char *)malloc((int)strlen(argv[i]) + 1);
       strcpy(patterns[patternsLen], argv[i]);
       patternsLen++;
@@ -52,12 +52,12 @@ int main(int argc, char *argv[]) {
 
 
   grepPrint(flags,argc,argv,patterns,patternsLen,allFiles,filesLen);
+
   // for (int i = 0; i < patternsLen; i++){
   //   printf("Pat - %s\n",patterns[i]);
   // }
   // for (int i = 0; i < filesLen; i++){
   //   printf("Files - %s\n",allFiles[i]);
   // }
-
-  // printf("%d",flags.e);
+  // printf("%d",flags.allFlags);
 }
