@@ -41,11 +41,8 @@ void printFile(Flags flagsObj, int argc, char *argv[]){
         if(newRow && ch != '\n'){
           fprintf(stdout,"%6d	",lineCount);//!🚨 После %d идет → TAB 
           lineCount++;
-        }else if(newRow){
-          for (int k = 0; k < 8; k++){
-            fputc(' ', stdout);
-          }
-          
+        }else if(newRow && flagsObj.e){
+          printf("      	");//!🚨 После %d идет → TAB 
         }
       }
 /*🚩*/if(flagsObj.n == 1 && flagsObj.b != 1){
