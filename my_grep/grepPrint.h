@@ -6,13 +6,10 @@
 #include "regex.h"
 
 void grepPrint(Flags flags,int argc, char *argv[],char* patterns[],int patternsLen,char *files[],int filesLen){
-  // if(flags.e){
-  //   printf("%s,%d",patterns[0],patternsLen);
-  // }
   for (int i = 0; i < filesLen; i++){
     FILE *file = fopen(files[i],"r");
       if (file == NULL) {
-        //! добавить ошибку
+        //! добавить ошибку -s флага 
         perror(files[i]);
         continue;
       }

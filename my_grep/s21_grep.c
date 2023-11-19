@@ -21,36 +21,32 @@ int main(int argc, char *argv[]) {
   int filesLen = 0;
 
   //* Проверка на наличие флагов
-  bool allFlags = false;
-  for (int i = 1; i < argc; i++){
-    if(argv[i][0] == '-'){
-      allFlags = true;
-      break;
-    }
-  }
-
+  
   //* Основная раскидка по массивам files и patterns
   for (int i = 1; i < argc; i++){
-    int prevLen = i > 1 ? (int)strlen(argv[i - 1]) : 0;
-    if(!allFlags){
-      patterns[patternsLen] = (char *)malloc((int)strlen(argv[i]) + 1);
-      strcpy(patterns[patternsLen], argv[i]);
-      patternsLen = 1;
-    }
-    if(allFlags && !flags.e && argv[i][0] != '-'){
-      patterns[patternsLen] = (char *)malloc((int)strlen(argv[i]) + 1);
-      strcpy(patterns[patternsLen], argv[i]);
-      patternsLen = 1;
-    }
-    if(flags.e && argv[i][0] != '-' && argv[i-1][prevLen -1] == 'e' && flags.e){
+    if(!flags.allFlags && patterns[0] == NULL && argv[i][0] != '-'){
       patterns[patternsLen] = (char *)malloc((int)strlen(argv[i]) + 1);
       strcpy(patterns[patternsLen], argv[i]);
       patternsLen++;
+      continue;
     }
-    if(argv[i][0] != '-' && strstr(patterns[patternsLen - 1],argv[i]) == 0){
+    if(flags.allFlags && !flags.e && argv[i][0] != '-'){
+      patterns[patternsLen] = (char *)malloc((int)strlen(argv[i]) + 1);
+      strcpy(patterns[patternsLen], argv[i]);
+      patternsLen++;
+      continue;
+    }
+    if(flags.e && argv[i][0] != '-' && argv[i-1][(int)strlen(argv[i-1]) - 1] == 'e'){
+      patterns[patternsLen] = (char *)malloc((int)strlen(argv[i]) + 1);
+      strcpy(patterns[patternsLen], argv[i]);
+      patternsLen++;
+      continue;
+    }
+    if(argv[i][0] != '-' && patternsLen != 0 && strstr(patterns[patternsLen - 1],argv[i]) == NULL){
       allFiles[filesLen] = (char *)malloc((int)strlen(argv[i]) + 1);
       strcpy(allFiles[filesLen], argv[i]);
       filesLen++;
+      continue;
     }
   }
 
@@ -59,7 +55,9 @@ int main(int argc, char *argv[]) {
   // for (int i = 0; i < patternsLen; i++){
   //   printf("Pat - %s\n",patterns[i]);
   // }
-  
+  // for (int i = 0; i < filesLen; i++){
+  //   printf("Files - %s\n",allFiles[i]);
+  // }
 
   // printf("%d",flags.e);
 }
