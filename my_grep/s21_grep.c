@@ -5,21 +5,19 @@
 #include <unistd.h>
 #include <ctype.h>
 #include "regex.h"
-//* Старые версии
 #include "flagChecker.h"
 #include "printNFunc.h"
 #include "printCLFunc.h"
-//* Новые версии
 #include "grepPrint.h"
 
 int main(int argc, char *argv[]) {
+  //* Вызываем флаги
   Flags flags = flagChecker(argc,argv);
+  //* Создаем массивы для паттернов и файлов 
   char ** patterns = (char **)calloc(argc ,sizeof(char*));
   char ** allFiles = (char **)calloc(argc ,sizeof(char*));
   int patternsLen = 0;
   int filesLen = 0;
-
-  //* Проверка на наличие флагов
   
   //* Основная раскидка по массивам files и patterns
   for (int i = 1; i < argc; i++){
@@ -49,14 +47,5 @@ int main(int argc, char *argv[]) {
     }
   }
 
-
   grepPrint(flags,argc,argv,patterns,patternsLen,allFiles,filesLen);
-
-  // for (int i = 0; i < patternsLen; i++){
-  //   printf("Pat - %s\n",patterns[i]);
-  // }
-  // for (int i = 0; i < filesLen; i++){
-  //   printf("Files - %s\n",allFiles[i]);
-  // }
-  // printf("%d",flags.allFlags);
 }

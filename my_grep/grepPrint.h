@@ -8,12 +8,10 @@
 void grepPrint(Flags flags,int argc, char *argv[],char* patterns[],int patternsLen,char *files[],int filesLen){
   for (int i = 0; i < filesLen; i++){
     FILE *file = fopen(files[i],"r");
-      if (file == NULL) {
-        //! добавить ошибку -s флага 
-        perror(files[i]);
-        continue;
-      }
-
+    if (file == NULL) {
+      perror(files[i]);
+      continue;
+    }
     regex_t regex;
     regmatch_t pmatch[1];
     int maxFileString = findStrSize(argc,argv);
