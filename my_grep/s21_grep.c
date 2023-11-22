@@ -38,4 +38,15 @@ int main(int argc, char *argv[]) {
   }
 
   grepPrint(flags,argc,argv,patterns,patternsLen,allFiles,filesLen);
+  
+  //* Освобождаем выделенную память
+    for (int i = 0; i < patternsLen; i++) {
+        free(patterns[i]);
+    }
+    for (int i = 0; i < filesLen; i++) {
+        free(allFiles[i]);
+    }
+
+    free(patterns);
+    free(allFiles);
 }

@@ -19,6 +19,7 @@ int findStrSize(int argc,char *argv[]){
         }
       }
     }
+    fclose(file);
   }
   return maxLength + 10;
 }
