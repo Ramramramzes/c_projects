@@ -2,13 +2,13 @@
 #ifndef MYHEADER_H
 #define MYHEADER_H
 
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 #include <string.h>
 
 //* Создаем структуру с переменными флагов 0 - 1
-typedef struct{
+typedef struct {
   int b;
   int e;
   int n;
@@ -18,7 +18,7 @@ typedef struct{
   int err;
 } Flags;
 
-Flags flagChecker(int argc,char *argv[]);
+Flags flagChecker(int argc, char *argv[]);
 void printFile(Flags flagsObj, int argc, char *argv[]);
 void simplePrint(char *argv[]);
 #endif

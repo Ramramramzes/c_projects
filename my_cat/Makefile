@@ -17,3 +17,4 @@ flagChecker.o: flagChecker.c
 	
 clean:
 	rm -f *.o s21_cat
+	
