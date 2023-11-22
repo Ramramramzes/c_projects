@@ -1,12 +1,4 @@
-//* добавляем PRINT_FILE_H в предпроцессор 🛠️
-#ifndef PRINT_FILE_H
-#define PRINT_FILE_H
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <string.h>
-#include "flagChecker.h"
+#include "myHeader.h"
 
 //* Фунция добавялет символы в stdout
 void printFile(Flags flagsObj, int argc, char *argv[]){
@@ -77,4 +69,4 @@ void printFile(Flags flagsObj, int argc, char *argv[]){
   }
 
 }
-#endif
+

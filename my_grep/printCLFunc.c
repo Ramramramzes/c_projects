@@ -1,10 +1,4 @@
-#ifndef PRINTCL_H
-#define PRINTCL_H
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <string.h>
+#include "myHeader.h"
 
 void myCLprint(Flags flags,int strCounter,char* filename,int fileArrCount){
   if(flags.c && flags.l){
@@ -28,5 +22,3 @@ void myCLprint(Flags flags,int strCounter,char* filename,int fileArrCount){
     }
   }
 }
-
-#endif

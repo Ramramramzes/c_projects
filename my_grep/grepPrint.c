@@ -1,9 +1,4 @@
-//* добавляем GREPPRINT_H в предпроцессор 🛠️
-#ifndef GREPPRINT_H
-#define GREPPRINT_H
-
-#include "findMaxMy.h"
-#include "regex.h"
+#include "myHeader.h"
 
 void grepPrint(Flags flags,int argc, char *argv[],char* patterns[],int patternsLen,char *files[],int filesLen){
   for (int i = 0; i < filesLen; i++){
@@ -65,6 +60,3 @@ void grepPrint(Flags flags,int argc, char *argv[],char* patterns[],int patternsL
     fclose(file);
   }
 }
-
-
-#endif

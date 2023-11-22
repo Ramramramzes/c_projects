@@ -1,11 +1,19 @@
-GCC = gcc
-FLAGS = -Wall -Wextra -Werror -std=c99
-PROG = s21_cat
+CC = gcc
+CFLAGS = -Wall -Werror -Wextra
 
-all: clean $(PROG)
+all: s21_cat
 
-$(PROG): s21_cat.c
-	$(GCC) $(FLAGS) s21_cat.c -o $(PROG)
+s21_cat: flagChecker.o printFile.o simplePrint.o s21_cat.o
+	$(CC) $(CFLAGS) $^ -o $@
 
+printFile.o: printFile.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+simplePrint.o: simplePrint.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+flagChecker.o: flagChecker.c
+	$(CC) $(CFLAGS) -c $< -o $@
+	
 clean:
-	rm -rf $(PROG)
+	rm -f *.o s21_cat

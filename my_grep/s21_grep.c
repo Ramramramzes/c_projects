@@ -1,14 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <string.h>
-#include <unistd.h>
-#include <ctype.h>
-#include "regex.h"
-#include "flagChecker.h"
-#include "printNFunc.h"
-#include "printCLFunc.h"
-#include "grepPrint.h"
+#include "myHeader.h"
 
 int main(int argc, char *argv[]) {
   //* Вызываем флаги

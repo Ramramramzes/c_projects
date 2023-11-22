@@ -1,14 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <string.h>
-
-#include "simplePrint.h"
-#include "flagChecker.h"
-#include "printFile.h"
-
-
-
+#include "myHeader.h"
 
 int main(int argc, char *argv[]){
   //! argv[0] - массив содержащий ./test text.txt (нужен для флагов)🚨

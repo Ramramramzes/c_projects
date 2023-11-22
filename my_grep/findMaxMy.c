@@ -1,10 +1,4 @@
-#ifndef FINDMAX_H
-#define FINDMAX_H
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <string.h>
+#include "myHeader.h"
 
 int findStrSize(int argc,char *argv[]){
   int maxLength = 0;
@@ -28,5 +22,3 @@ int findStrSize(int argc,char *argv[]){
   }
   return maxLength + 10;
 }
-
-#endif

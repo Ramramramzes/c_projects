@@ -1,22 +1,4 @@
-//* добавляем FLAG_CHECKER_H в предпроцессор 🛠️
-#ifndef FLAG_CHECKER_H
-#define FLAG_CHECKER_H
-#include "findMaxMy.h"
-
-//* Создаем структуру с переменными флагов 0 - 1
-typedef struct{
-  int e;
-  int i;
-  int v;
-  int c;
-  int l;
-  int n;
-  int h;
-  int s;
-  int f;
-  int o;
-  bool allFlags;
-} Flags;
+#include "myHeader.h"
 
 //* Создаем массив символов флагов 
 char *wordsArr[] = {"e","i","v","c","l","n","h","s","f","o"};
@@ -89,5 +71,3 @@ Flags flagChecker(int argc,char *argv[]){
 
   return flags;
 }
-
-#endif
