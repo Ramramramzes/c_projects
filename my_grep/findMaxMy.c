@@ -26,5 +26,5 @@ int findStrSize(int argc, char *argv[]) {
   if (currentLength > maxLength) {
     maxLength = currentLength;
   }
-  return maxLength;
+  return maxLength+1000;
 }
