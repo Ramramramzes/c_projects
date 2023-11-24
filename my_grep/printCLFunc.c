@@ -3,9 +3,9 @@
 void myCLprint(Flags flags, int strCounter, char* filename, int fileArrCount) {
   if (flags.c && flags.l) {
     if (fileArrCount > 1) {
-      printf("%s:1", filename);
+      printf("%s:1\n", filename);
       printf("%s\n", filename);
-    } else {
+    } else if(fileArrCount == 1) {
       printf("1\n");
       printf("%s\n", filename);
     }
@@ -18,7 +18,11 @@ void myCLprint(Flags flags, int strCounter, char* filename, int fileArrCount) {
       }
     }
     if (flags.l) {
-      printf("%s\n", filename);
+      if (fileArrCount > 1) {
+        printf("%s:\n", filename);
+      }else{
+        printf("%s\n", filename);
+      }
     }
   }
 }

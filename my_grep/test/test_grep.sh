@@ -1,53 +1,136 @@
-#!/bin/bash
+#!/ bin / bash
 
-COUNTER_SUCCESS=0
-COUNTER_FAIL=0
-DIFF_RES=""
-PATTERN1="ra"
-PATTERN2="lol"
-TEST_FILE="test.txt"
-echo "" > log.txt
+fails=0
+success=0
 
-echo "Testing..."
-for var in -e -i -v -c -l -n -h -s -o
+pattern='Hello'
+pattern_file='pattern.txt'
+file='test.txt'
+non_file='nonfile.txt'
+second_pattern='aaa'
+
+echo "" > log_grep.txt
+
+flags=(
+  "c"
+  "h"
+  "i"
+  "l"
+  "n"
+  "s"
+  "v"
+)
+
+echo "____TESTING_SINGLE_GREP_FLAGS____"
+
+for flag in "${flags[@]}"
 do
-          TEST1="$var $PATTERN1 $TEST_FILE"
-#          echo "$TEST1"
-          ../s21_grep $TEST1 > s21_grep.txt
-          grep $TEST1 > grep.txt
-          DIFF_RES="$(diff -s s21_grep.txt grep.txt)"
-          if [ "$DIFF_RES" == "Files s21_grep.txt and grep.txt are identical" ]
-            then
-              (( COUNTER_SUCCESS++ ))
-            else
-              echo "$TEST1" >> log.txt
-              (( COUNTER_FAIL++ ))
-          fi
-          rm s21_grep.txt grep.txt
+    grep "-$flag" $pattern $file > grep.txt
+    ./s21_grep "-$flag" $pattern $file > s21_grep.txt
+    diff -q grep.txt s21_grep.txt
+    if [ $? -eq 0 ]
+    then
+        (( success++ ))
+        echo "OK: grep -$flag $pattern $file"
+    else
+        echo "./s21_grep -$flag $pattern $file" >> log_grep.txt
+        (( fails++ ))
+        echo "FAIL: grep -$flag $pattern $file"
+    fi
 done
 
-for var in -e -i -v -c -l -n -h -s -o
+echo "____TESTING_GREP_2_PATTERNS____"
+
+for flag in "${flags[@]}"
 do
-  for var2 in -e -i -v -c -l -n -h -s -o
-  do
-        if [ $var != $var2 ]
+    grep "-$flag" $pattern $file > grep.txt
+    ./s21_grep "-$flag" $pattern $file > s21_grep.txt
+    diff -q grep.txt s21_grep.txt
+    if [ $? -eq 0 ]
+    then
+        (( success++ ))
+        echo "OK: grep -$flag $pattern $second_pattern $file"
+    else
+        echo "./s21_grep -$flag $pattern $second_pattern $file" >> log_grep.txt
+        (( fails++ ))
+        echo "FAIL: grep -$flag $pattern $second_pattern $file"
+    fi
+done
+
+for flag in "${flags[@]}"
+do
+    grep "-$flag" $pattern $file > grep.txt
+    ./s21_grep "-$flag" $pattern $file > s21_grep.txt
+    diff -q grep.txt s21_grep.txt
+    if [ $? -eq 0 ]
+    then
+        (( success++ ))
+        echo "OK: grep -$flag -e $pattern -e $second_pattern $file"
+    else
+        echo "./s21_grep -$flag -e $pattern -e $second_pattern $file" >> log_grep.txt
+        (( fails++ ))
+        echo "FAIL: grep -$flag -e $pattern -e $second_pattern $file"
+    fi
+done
+
+echo "____TESTING_GREP_FLAGS_PAIRS____"
+
+for flag1 in "${flags[@]}"
+do
+    for flag2 in "${flags[@]}"
+    do
+        if [ $flag1 != $flag2 ]
         then
-          TEST1="$var $var2 $PATTERN1 $TEST_FILE"
-#          echo "$TEST1"
-          ../s21_grep $TEST1 > s21_grep.txt
-          grep $TEST1 > grep.txt
-          DIFF_RES="$(diff -s s21_grep.txt grep.txt)"
-          if [ "$DIFF_RES" == "Files s21_grep.txt and grep.txt are identical" ]
+            grep "-$flag1$flag2" $pattern $file > grep.txt
+            ./s21_grep "-$flag1$flag2" $pattern $file > s21_grep.txt
+            diff -q grep.txt s21_grep.txt
+            if [ $? -eq 0 ]
             then
-              (( COUNTER_SUCCESS++ ))
+                (( success++ ))
+                echo "OK: grep -$flag1$flag2 $pattern $file"
             else
-              echo "$TEST1" >> log.txt
-              (( COUNTER_FAIL++ ))
-          fi
-          rm s21_grep.txt grep.txt
+                echo "./s21_grep -$flag1$flag2 $pattern $file" >> log_grep.txt
+                (( fails++ ))
+                echo "FAIL: grep -$flag1$flag2 $pattern $file"
+            fi
         fi
-  done
+    done
 done
 
-echo "SUCCESS: $COUNTER_SUCCESS"
-echo "FAIL: $COUNTER_FAIL"
+grep "-o" $pattern $file > grep.txt
+./s21_grep "-o" $pattern $file > s21_grep.txt
+diff -q grep.txt s21_grep.txt
+if [ $? -eq 0 ]
+then
+    (( success++ ))
+    echo "OK: -o $pattern $file"
+else
+    echo "./s21_grep -o $pattern $file" >> log_grep.txt
+    (( fails++ ))
+    echo "FAIL: -o $pattern $file"
+fi
+
+echo "____TESTING_GREP_FLAG_F____"
+
+grep "-f" $pattern_file $file > grep.txt
+./s21_grep "-f" $pattern_file $file > s21_grep.txt
+diff -q grep.txt s21_grep.txt
+if [ $? -eq 0 ]
+then
+    (( success++ ))
+    echo "OK: -f $pattern_file $file"
+else
+    echo "./s21_grep -f $pattern_file $file" >> log_grep.txt
+    (( fails++ ))
+    echo "FAIL: -f $pattern_file $file"
+fi
+
+
+echo "SUCCESS: $success"
+echo "FAIL $fails"
+
+
+
+rm -f grep.txt s21_grep.txt
+
+exit 0
