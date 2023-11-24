@@ -22,7 +22,7 @@ void grepPrint(Flags flags, int argc, char *argv[], char *patterns[],
       strNumber++;
       flagV = 0;
       char prevLine[maxFileString];
-
+      strcpy(prevLine, "");
       for (int j = 0; j < patternsLen; j++) {
         regcomp(&regex, patterns[j], regexFlags);
         if (!flags.v) {

@@ -32,19 +32,21 @@ void printFile(Flags flagsObj, int argc, char *argv[]) {
         }
         /*🚩*/ if (flagsObj.b == 1) {
           //* Циклами добавляю пробелы при использовании -b в cat выводится с
-          //пробелами
+          // пробелами
           if (newRow && ch != '\n') {
-            fprintf(stdout, "%6d	", lineCount);  //!🚨 После %d идет → TAB
+            fprintf(stdout, "%6d	",
+                    lineCount);  //! 🚨 После %d идет → TAB
             lineCount++;
           } else if (newRow && flagsObj.e) {
-            printf("      	");  //!🚨 После %d идет → TAB
+            printf("      	");  //! 🚨 После %d идет → TAB
           }
         }
         /*🚩*/ if (flagsObj.n == 1 && flagsObj.b != 1) {
           //* Циклами добавляю пробелы при использовании -b в cat выводится с
-          //пробелами
+          // пробелами
           if (newRow) {
-            fprintf(stdout, "%6d	", lineCount);  //!🚨 После %d идет → TAB
+            fprintf(stdout, "%6d	",
+                    lineCount);  //! 🚨 После %d идет → TAB
             lineCount++;
           }
         }
@@ -55,7 +57,7 @@ void printFile(Flags flagsObj, int argc, char *argv[]) {
           }
         }
         /*🚩*/ if (flagsObj.t == 1) {
-          //!🚨 CH == → TAB
+          //! 🚨 CH == → TAB
           //* Находим TAB и заменяем его двумя символами
           if (ch == '	') {
             fputc('^', stdout);
