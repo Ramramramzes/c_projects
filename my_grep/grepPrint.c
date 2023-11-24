@@ -13,7 +13,6 @@ void grepPrint(Flags flags, int argc, char *argv[], char *patterns[],
     int maxFileString = findStrSize(argc, argv);
     int regexFlags = flags.i ? REG_ICASE : 0;
     char line[maxFileString];
-    bool wasPrinted = false;
     int flagV = 0;
     int strNumber = 0;
     int strCounter = 0;
@@ -28,13 +27,8 @@ void grepPrint(Flags flags, int argc, char *argv[], char *patterns[],
         if (!flags.v) {
           if (regexec(&regex, line, 1, pmatch, 0) == 0) {
             strCounter++;
-            if (wasPrinted && strcmp(line, prevLine) == 0) {
-              continue;
-            } else {
-              if (!flags.c && !flags.l) {
-                myMainPrint(flags, strNumber, line, files[i], filesLen);
-                wasPrinted = true;
-              }
+            if (!flags.c && !flags.l) {
+              myMainPrint(flags, strNumber, line, files[i], filesLen);
             }
           }
         } else {
