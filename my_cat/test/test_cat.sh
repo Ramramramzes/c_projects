@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/ bin / bash
 
 COUNTER_SUCCESS=0
 COUNTER_FAIL=0
@@ -10,7 +10,7 @@ echo "Testing..."
 for var in -v -b -e -n -s -t #-E -T --number-nonblank --number --squeeze-blank
 do
           TEST1="$var $TEST_FILE"
-#          echo "$TEST1"
+#echo "$TEST1"
           ../s21_cat $TEST1 > s21_cat.txt
           cat $TEST1 > cat.txt
           DIFF_RES="$(diff -s s21_cat.txt cat.txt)"
@@ -31,7 +31,7 @@ do
         if [ $var != $var2 ]
         then
           TEST1="$var $var2 $TEST_FILE"
-#          echo "$TEST1"
+#echo "$TEST1"
           ../s21_cat $TEST1 > s21_cat.txt
           cat $TEST1 > cat.txt
           DIFF_RES="$(diff -s s21_cat.txt cat.txt)"
@@ -56,7 +56,7 @@ do
         if [ $var != $var2 ] && [ $var2 != $var3 ] && [ $var != $var3 ]
         then
           TEST1="$var $var2 $var3 $TEST_FILE"
-#          echo "$TEST1"
+#echo "$TEST1"
           ../s21_cat $TEST1 > s21_cat.txt
           cat $TEST1 > cat.txt
           DIFF_RES="$(diff -s s21_cat.txt cat.txt)"
@@ -85,7 +85,7 @@ do
             if [ $var != $var2 ] && [ $var2 != $var3 ] && [ $var != $var3 ] && [ $var != $var4 ] && [ $var2 != $var4 ] && [ $var3 != $var4 ]
             then
               TEST1="$var $var2 $var3 $var4 $TEST_FILE"
-#              echo "$TEST1"
+#echo "$TEST1"
               ../s21_cat $TEST1 > s21_cat.txt
               cat $TEST1 > cat.txt
               DIFF_RES="$(diff -s s21_cat.txt cat.txt)"

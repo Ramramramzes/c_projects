@@ -1,5 +1,11 @@
 #include "myHeader.h"
 
+int peekc(FILE *file) {
+  int nextCh = getc(file);
+  ungetc(nextCh, file);
+  return nextCh;
+}
+
 //* Фунция добавялет символы в stdout
 void printFile(Flags flagsObj, int argc, char *argv[]) {
   //* Пропускаем ./a.out и -флаги начинаем с 2
@@ -11,11 +17,15 @@ void printFile(Flags flagsObj, int argc, char *argv[]) {
         break;
       }
       int ch;
+      int nextCh;
       int circles = 0;
       bool newRow = true;
+      bool skip = false;
       int lineCount = 1;
       //* Поштучно сравниваем каждый символ, добавим проверку каждого флага в
-      while ((ch = fgetc(file)) != EOF) {
+      for (ch = getc(file); ch != EOF; ch = getc(file)) {
+        nextCh = peekc(file);
+        
         //* Обработка флагов 🇷🇺
         /*🚩*/ if (flagsObj.s == 1) {
           //* Использую переменную circles для вычисления момента где будут идти
@@ -39,6 +49,14 @@ void printFile(Flags flagsObj, int argc, char *argv[]) {
           } else if (newRow && flagsObj.e) {
             printf("      	");  //! 🚨 После %d идет → TAB
           }
+
+          if(nextCh == '\n' && !skip && !flagsObj.e){
+            if(flagsObj.v || flagsObj.t){
+              fputc('^', stdout);
+              fputc('M', stdout);
+              skip = true;
+            }
+          }
         }
         /*🚩*/ if (flagsObj.n == 1 && flagsObj.b != 1) {
           //* Циклами добавляю пробелы при использовании -b в cat выводится с
@@ -48,27 +66,44 @@ void printFile(Flags flagsObj, int argc, char *argv[]) {
                     lineCount);  //! 🚨 После %d идет → TAB
             lineCount++;
           }
-        }
-        /*🚩*/ if (flagsObj.e == 1) {
-          //* Просто добавляем $ после каждого \n
-          if (ch == '\n') {
-            fputc('$', stdout);
+          if(nextCh == '\n' && !skip && !flagsObj.e){
+            if(flagsObj.v || flagsObj.t){
+              fputc('^', stdout);
+              fputc('M', stdout);
+              skip = true;
+            }
           }
         }
         /*🚩*/ if (flagsObj.t == 1) {
-          //! 🚨 CH == → TAB
-          //* Находим TAB и заменяем его двумя символами
           if (ch == '	') {
             fputc('^', stdout);
             fputc('I', stdout);
-            //* Заменяем ch на пустоту
-            ch = '\0';
+            //* скипаем вывод
+            skip = true;
+          }
+          if(nextCh == '\n' && !skip && !flagsObj.e){
+            if(flagsObj.v || flagsObj.t){
+              fputc('^', stdout);
+              fputc('M', stdout);
+              skip = true;
+            }
+          }
+        }
+        /*🚩*/ if (flagsObj.e == 1) {
+          if(nextCh == '\n'){
+            fputc('^', stdout);
+            fputc('M', stdout);
+            fputc('$', stdout);
+            skip = true;
           }
         }
         //* Каждую итерацию проверяем newRow является ли новой строкой
         newRow = (ch == '\n');
         //* Каждую итерацию выводим в символ в stdout
-        fputc(ch, stdout);
+        if(!skip){
+          fputc(ch, stdout);
+        }
+        skip = false;
       }
     }
   }
