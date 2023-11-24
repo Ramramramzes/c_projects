@@ -25,7 +25,7 @@ void printFile(Flags flagsObj, int argc, char *argv[]) {
       //* Поштучно сравниваем каждый символ, добавим проверку каждого флага в
       for (ch = getc(file); ch != EOF; ch = getc(file)) {
         nextCh = peekc(file);
-        
+
         //* Обработка флагов 🇷🇺
         /*🚩*/ if (flagsObj.s == 1) {
           //* Использую переменную circles для вычисления момента где будут идти
@@ -50,8 +50,8 @@ void printFile(Flags flagsObj, int argc, char *argv[]) {
             printf("      	");  //! 🚨 После %d идет → TAB
           }
 
-          if(nextCh == '\n' && !skip && !flagsObj.e){
-            if(flagsObj.v || flagsObj.t){
+          if (nextCh == '\n' && !skip && !flagsObj.e) {
+            if (flagsObj.v || flagsObj.t) {
               fputc('^', stdout);
               fputc('M', stdout);
               skip = true;
@@ -66,8 +66,8 @@ void printFile(Flags flagsObj, int argc, char *argv[]) {
                     lineCount);  //! 🚨 После %d идет → TAB
             lineCount++;
           }
-          if(nextCh == '\n' && !skip && !flagsObj.e){
-            if(flagsObj.v || flagsObj.t){
+          if (nextCh == '\n' && !skip && !flagsObj.e) {
+            if (flagsObj.v || flagsObj.t) {
               fputc('^', stdout);
               fputc('M', stdout);
               skip = true;
@@ -81,8 +81,8 @@ void printFile(Flags flagsObj, int argc, char *argv[]) {
             //* скипаем вывод
             skip = true;
           }
-          if(nextCh == '\n' && !skip && !flagsObj.e){
-            if(flagsObj.v || flagsObj.t){
+          if (nextCh == '\n' && !skip && !flagsObj.e) {
+            if (flagsObj.v || flagsObj.t) {
               fputc('^', stdout);
               fputc('M', stdout);
               skip = true;
@@ -90,7 +90,7 @@ void printFile(Flags flagsObj, int argc, char *argv[]) {
           }
         }
         /*🚩*/ if (flagsObj.e == 1) {
-          if(nextCh == '\n'){
+          if (nextCh == '\n') {
             fputc('^', stdout);
             fputc('M', stdout);
             fputc('$', stdout);
@@ -100,7 +100,7 @@ void printFile(Flags flagsObj, int argc, char *argv[]) {
         //* Каждую итерацию проверяем newRow является ли новой строкой
         newRow = (ch == '\n');
         //* Каждую итерацию выводим в символ в stdout
-        if(!skip){
+        if (!skip) {
           fputc(ch, stdout);
         }
         skip = false;
