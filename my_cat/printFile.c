@@ -10,12 +10,11 @@ void printFile(Flags flagsObj, int argc, char *argv[]) {
         printf("Файл не найден");
         break;
       }
-      char ch;
+      int ch;
       int circles = 0;
       bool newRow = true;
       int lineCount = 1;
       //* Поштучно сравниваем каждый символ, добавим проверку каждого флага в
-      // while
       while ((ch = fgetc(file)) != EOF) {
         //* Обработка флагов 🇷🇺
         /*🚩*/ if (flagsObj.s == 1) {
